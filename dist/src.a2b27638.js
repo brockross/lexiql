@@ -28285,7 +28285,37 @@ if ("development" === 'production') {
 } else {
   module.exports = require('./cjs/react-dom.development.js');
 }
-},{"./cjs/react-dom.development.js":"node_modules/react-dom/cjs/react-dom.development.js"}],"src/components/App.jsx":[function(require,module,exports) {
+},{"./cjs/react-dom.development.js":"node_modules/react-dom/cjs/react-dom.development.js"}],"key.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _default = "8886dd964dmsha6bb572aed91033p1b0293jsn83c3b53813e3";
+exports.default = _default;
+},{}],"src/components/WordBox.jsx":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var WordBox = function WordBox(_ref) {
+  var word = _ref.word;
+  return _react.default.createElement("div", null, _react.default.createElement("h3", null, word.word), word.definitions.map(function (def) {
+    return _react.default.createElement("p", null, "**", def.definition);
+  }));
+};
+
+var _default = WordBox;
+exports.default = _default;
+},{"react":"node_modules/react/index.js"}],"src/components/App.jsx":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28295,9 +28325,23 @@ exports.default = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
+var _key = _interopRequireDefault(require("../../key"));
+
+var _WordBox = _interopRequireDefault(require("./WordBox"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
@@ -28317,20 +28361,56 @@ var App = function App() {
       wordList = _useState2[0],
       setWordList = _useState2[1];
 
-  return _react.default.createElement("div", null, _react.default.createElement("form", null, _react.default.createElement("label", {
-    "for": "word"
-  }, "Enter a word: "), _react.default.createElement("input", {
-    name: "word"
+  var _useState3 = (0, _react.useState)(""),
+      _useState4 = _slicedToArray(_useState3, 2),
+      inputText = _useState4[0],
+      setInputText = _useState4[1];
+
+  var handleChange = function handleChange(e) {
+    setInputText(e.target.value);
+  };
+
+  var handleSubmit = function handleSubmit(e) {
+    fetch("https://wordsapiv1.p.rapidapi.com/words/".concat(inputText), {
+      method: "GET",
+      headers: {
+        "x-rapidapi-host": "wordsapiv1.p.rapidapi.com",
+        "x-rapidapi-key": "a9d7d98fb5msh8bb4498dd4c0279p1465c4jsn20116e9ee8c6"
+      }
+    }).then(function (res) {
+      return res.json();
+    }).then(function (data) {
+      return addWord(data);
+    });
+    e.preventDefault();
+  };
+
+  var addWord = function addWord(wordData) {
+    var newWord = {
+      word: wordData.word,
+      definitions: wordData.results
+    };
+    setWordList([newWord].concat(_toConsumableArray(wordList)));
+  };
+
+  return _react.default.createElement("div", null, _react.default.createElement("form", {
+    onSubmit: handleSubmit
+  }, _react.default.createElement("label", null, "Enter a word: "), _react.default.createElement("input", {
+    name: "word",
+    onChange: handleChange
   }), _react.default.createElement("button", {
     type: "submit"
   }, "Submit")), wordList.map(function (word) {
-    return _react.default.createElement("div", null);
+    console.log;
+    return _react.default.createElement(_WordBox.default, {
+      word: word
+    });
   }));
 };
 
 var _default = App;
 exports.default = _default;
-},{"react":"node_modules/react/index.js"}],"src/index.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","../../key":"key.js","./WordBox":"src/components/WordBox.jsx"}],"src/index.js":[function(require,module,exports) {
 "use strict";
 
 var _reactDom = _interopRequireDefault(require("react-dom"));
