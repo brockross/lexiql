@@ -14,7 +14,7 @@ const App = () => {
       method: "GET",
       headers: {
         "x-rapidapi-host": "wordsapiv1.p.rapidapi.com",
-        "x-rapidapi-key": "a9d7d98fb5msh8bb4498dd4c0279p1465c4jsn20116e9ee8c6",
+        "x-rapidapi-key": key,
       },
     })
       .then((res) => res.json())
@@ -22,10 +22,12 @@ const App = () => {
 
     e.preventDefault();
   };
+
   const addWord = (wordData) => {
     const newWord = {
       word: wordData.word,
       definitions: wordData.results,
+      edges: [],
     };
 
     setWordList([newWord, ...wordList]);
