@@ -5,12 +5,7 @@ import key from "../../key";
 import MindMapper from "./MindMapper";
 
 const App = () => {
-  const graphHead = {
-    word: "test",
-    edges: [],
-  };
-
-  const [wordGraph, setWordGraph] = useState(graphHead);
+  const [wordGraph, setWordGraph] = useState("");
   const [inputText, setInputText] = useState("");
 
   const handleChange = (e) => {
@@ -25,7 +20,7 @@ const App = () => {
       },
     })
       .then((res) => res.json())
-      .then((data) => addWord(data, "test"));
+      .then((data) => addWord(data, null));
 
     e.preventDefault();
   };
@@ -33,6 +28,7 @@ const App = () => {
   const findSource = (word, graph) => {
     // nav graph to find node where node.word == word
     // return that node
+    // TODO: keep track of visited words to prevent infinite loops
     if (graph.word == word) {
       return graph;
     } else {
@@ -42,20 +38,23 @@ const App = () => {
       }
     }
   };
+
   const addWord = (wordData, sourceWord) => {
     const newWord = {
       word: wordData.word,
-      definitions: wordData.results,
+      definition: wordData.results[0].definition,
+      synonyms: wordData.results[0].synonyms,
       edges: [],
     };
-
-    const nextGraph = produce(wordGraph, (draftGraph) => {
-      let sourceNode = findSource(sourceWord, draftGraph);
-      sourceNode.edges.push(newWord);
-    });
-    // need reference to node where word was clicked, so new node can be added to its edges[]
-    // build new node; add nodes to each other's edges array
-    setWordGraph(nextGraph);
+    if (sourceWord) {
+      const nextGraph = produce(wordGraph, (draftGraph) => {
+        let sourceNode = findSource(sourceWord, draftGraph);
+        sourceNode.edges.push(newWord);
+      });
+      setWordGraph(nextGraph);
+    } else {
+      setWordGraph(newWord);
+    }
   };
 
   const handleWordClick = (word, sourceWord) => {
@@ -76,8 +75,12 @@ const App = () => {
         <label>Enter a word: </label>
         <input name="word" onChange={handleChange}></input>
         <button type="submit">Submit</button>
-        <MindMapper graph={wordGraph} handleWordClick={handleWordClick} />
       </form>
+      {wordGraph ? (
+        <MindMapper graph={wordGraph} handleWordClick={handleWordClick} />
+      ) : (
+        "enter a word"
+      )}
     </div>
   );
 };
