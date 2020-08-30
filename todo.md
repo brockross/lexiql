@@ -15,3 +15,8 @@
 ## Chunk 3: Choosy Moms Choose Jif® Chunky
 
 - add styling (Tailwind?)
+  - tailwind doesn't feel like a good choice here because there's too much unconventional custom styling of nodes/connections
+- work out how to deal with hierarchical data but orphaned styling--i.e., a node's edges will be HTML children, but should not appear contained within the node in any way
+- randomization of node position within a certain radius around its source?
+- at what point should i consider a library? i.e. a 2d graphical library
+- css offset values could be derived from index in edges array?
