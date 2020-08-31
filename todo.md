@@ -20,3 +20,9 @@
 - randomization of node position within a certain radius around its source?
 - at what point should i consider a library? i.e. a 2d graphical library
 - css offset values could be derived from index in edges array?
+- basic offset working; need multidirectional offset
+- also need to move lots of the data to collapsible containers so nodes can be smaller
+- i would love to somehow make a node's circumfrential space a flex container. i.e., take a div set to flex-direction row, and wrap it in a circle around the node. Any children can then be arranged using flex. There is probably some basic transform y type of math that could handle this
+- when rendering its edges[], a node also needs to be aware of its parent, lest it render a node on top of it. Spatially speaking, a parent node should sort of occupy the space normally alotted to an edge
+- a library is starting to sound really nice
+- should node placement be predetermined or random (within a range)? I like the latter but the former would be easier

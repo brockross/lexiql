@@ -10,7 +10,8 @@ const MindMapper = ({
   // receives a graph as props and navigates + renders it
   // TODO: pass node & click handler to WordBox; deal with making words clickable there
   const nodeStyles = {
-    width: "400px",
+    width: "200px",
+    fontSize: "12px",
     position: "absolute",
     left: `${lOffset}px`,
     top: `${tOffset}px`,
